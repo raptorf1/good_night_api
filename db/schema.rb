@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_28_090456) do
+ActiveRecord::Schema.define(version: 2023_07_28_095912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "sleep_wake_times", force: :cascade do |t|
+    t.datetime "sleep"
+    t.datetime "wake"
+    t.bigint "difference"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sleep_wake_times_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
@@ -21,4 +31,5 @@ ActiveRecord::Schema.define(version: 2023_07_28_090456) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "sleep_wake_times", "users"
 end
