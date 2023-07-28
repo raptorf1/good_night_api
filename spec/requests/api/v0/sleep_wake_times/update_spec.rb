@@ -1,4 +1,4 @@
-RSpec.describe "PUT /api/v0/sleep_wake_times", type: :request do
+RSpec.describe "PUT /api/v0/sleep_wake_times/:id", type: :request do
   let(:sleep_record) { FactoryBot.create(:sleep_wake_time, sleep: Time.now - 2.hours, wake: nil, difference: nil) }
   let(:random_sleep_record) do
     FactoryBot.create(:sleep_wake_time, sleep: Time.now - 2.hours, wake: nil, difference: nil)
