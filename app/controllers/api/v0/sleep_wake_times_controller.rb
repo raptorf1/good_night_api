@@ -19,15 +19,15 @@ class Api::V0::SleepWakeTimesController < ApplicationController
   end
 
   def update
-    render json: { errors: ["You need to pass user ID!"] }, status: 400 and return if params[:user_id].nil?
-
-    user = User.find_by(params[:user_id])
-    render json: { errors: ["User not found!"] }, status: 400 and return if user.nil?
-
-    record_to_update = SleepWakeTime.find_by(params[:id])
+    record_to_update = SleepWakeTime.find_by(id: params[:id])
     render json: { errors: ["Sleep record not found!"] }, status: 400 and return if record_to_update.nil?
 
-    if record_to_update.user.id != params[:user_id]
+    render json: { errors: ["You need to pass user ID!"] }, status: 400 and return if params[:user_id].nil?
+
+    user = User.find_by(id: params[:user_id])
+    render json: { errors: ["User not found!"] }, status: 400 and return if user.nil?
+
+    if record_to_update.user.id != user.id
       render json: { errors: ["Cannot update sleep record of another user!"] }, status: 400 and return
     end
 
@@ -39,7 +39,7 @@ class Api::V0::SleepWakeTimesController < ApplicationController
 
     render json: {
              message:
-               "Sleep record with ID: #{params[:id]} updated succesfully! Total sleep time: #{record_to_update.difference} seconds."
+               "Sleep record with ID: #{params[:id]} updated successfully! Total sleep time: #{record_to_update.difference} seconds."
            },
            status: 200
   end
