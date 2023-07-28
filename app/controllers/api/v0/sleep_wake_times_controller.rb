@@ -11,6 +11,36 @@ class Api::V0::SleepWakeTimesController < ApplicationController
       render json: { errors: record_to_create.errors.full_messages }, status: 400 and return
     end
 
-    render json: { message: "Success!" }, status: 200
+    render json: {
+             message:
+               "Sleep record with ID: #{record_to_create.id} created successfully! Sleep time: #{record_to_create.sleep}."
+           },
+           status: 200
+  end
+
+  def update
+    render json: { errors: ["You need to pass user ID!"] }, status: 400 and return if params[:user_id].nil?
+
+    user = User.find_by(params[:user_id])
+    render json: { errors: ["User not found!"] }, status: 400 and return if user.nil?
+
+    record_to_update = SleepWakeTime.find_by(params[:id])
+    render json: { errors: ["Sleep record not found!"] }, status: 400 and return if record_to_update.nil?
+
+    if record_to_update.user.id != params[:user_id]
+      render json: { errors: ["Cannot update sleep record of another user!"] }, status: 400 and return
+    end
+
+    record_to_update.update(wake: Time.now)
+
+    if record_to_update.errors.full_messages.length > 0
+      render json: { errors: record_to_update.errors.full_messages }, status: 400 and return
+    end
+
+    render json: {
+             message:
+               "Sleep record with ID: #{params[:id]} updated succesfully! Total sleep time: #{record_to_update.difference} seconds."
+           },
+           status: 200
   end
 end
