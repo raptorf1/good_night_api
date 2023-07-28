@@ -1,0 +1,33 @@
+# Ignore all logfiles and tempfiles.
+/log/*
+/tmp/*
+
+# Ignore uploaded files in development
+/storage/*
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+
+# Ignore coverage metrics
+/coverage
+
+# Ignore folders & files
+/db
+/app/views
+app/controllers/concerns/.keep
+app/models/concerns/.keep
+config/credentials.yml.enc
+lib/tasks/.keep
+log/.keep
+public/robots.txt
+storage/.keep
+tmp/.keep
+vendor/.keep
+.gitignore
+.prettierignore
+.rspec
+.ruby-version
+Gemfile.lock
+
+
+# bundle exec rbprettier --write '**/*'

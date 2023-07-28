@@ -1,4 +1,4 @@
-require_relative 'boot'
+require_relative "boot"
 
 require "rails"
 require "active_model/railtie"
@@ -19,9 +19,7 @@ module GoodNightApi
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins "localhost:3000"
-        resource "/api/v0/*",
-                 headers: :any,
-                 methods: %i[get post put patch delete]
+        resource "/api/v0/*", headers: :any, methods: %i[get post put patch delete]
       end
     end
   end

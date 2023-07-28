@@ -4,9 +4,7 @@ class SleepWakeTime < ApplicationRecord
   belongs_to :user
 
   def calculate_difference
-    if !self.sleep.nil? && !self.wake.nil?
-      self.update_column(:difference, self.wake - self.sleep)
-    end
+    self.update_column(:difference, self.wake - self.sleep) if !self.sleep.nil? && !self.wake.nil?
   end
 
   def self.fetch_all_sorted_by_created_at
