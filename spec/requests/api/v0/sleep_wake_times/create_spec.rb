@@ -26,22 +26,44 @@ RSpec.describe "POST /api/v0/sleep_wake_times", type: :request do
   end
 
   describe "unsuccesfully" do
-    before { post "/api/v0/sleep_wake_times", params: { user_id: 15_000 } }
+    describe "when user ID does not exist" do
+      before { post "/api/v0/sleep_wake_times", params: { user_id: 15_000 } }
 
-    it "with 400 status" do
-      expect(response.status).to eq 400
+      it "with 400 status" do
+        expect(response.status).to eq 400
+      end
+
+      it "with no records created in the DB" do
+        expect(SleepWakeTime.all.count).to eq 0
+      end
+
+      it "with correct number of errors" do
+        expect(json_response["errors"].count).to eq 1
+      end
+
+      it "with correct error message" do
+        expect(json_response["errors"].first).to eq "User must exist"
+      end
     end
 
-    it "with no records created in the DB" do
-      expect(SleepWakeTime.all.count).to eq 0
-    end
+    describe "when no user ID is passed" do
+      before { post "/api/v0/sleep_wake_times" }
 
-    it "with correct number of errors" do
-      expect(json_response["errors"].count).to eq 1
-    end
+      it "with 400 status" do
+        expect(response.status).to eq 400
+      end
 
-    it "with correct error message" do
-      expect(json_response["errors"].first).to eq "User must exist"
+      it "with no records created in the DB" do
+        expect(SleepWakeTime.all.count).to eq 0
+      end
+
+      it "with correct number of errors" do
+        expect(json_response["errors"].count).to eq 1
+      end
+
+      it "with correct error message" do
+        expect(json_response["errors"].first).to eq "You need to pass user ID!"
+      end
     end
   end
 end
