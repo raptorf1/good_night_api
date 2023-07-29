@@ -12,6 +12,10 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_db_column :updated_at }
   end
 
+  describe "Validations" do
+    it { is_expected.to validate_presence_of :name }
+  end
+
   describe "Relations" do
     it { is_expected.to have_many(:sleep_wake_time) }
   end

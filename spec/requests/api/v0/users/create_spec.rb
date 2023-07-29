@@ -32,7 +32,7 @@ RSpec.describe "POST /api/v0/users", type: :request do
       end
 
       it "with correct error message" do
-        expect(json_response["errors"].first).to eq "You need to provide a name in order to create a user!"
+        expect(json_response["errors"].first).to eq "Name can't be blank"
       end
 
       it "with no record created in the DB" do
@@ -52,7 +52,7 @@ RSpec.describe "POST /api/v0/users", type: :request do
       end
 
       it "with correct error message" do
-        expect(json_response["errors"].first).to eq "You need to provide a name in order to create a user!"
+        expect(json_response["errors"].first).to eq "Name can't be blank"
       end
 
       it "with no record created in the DB" do

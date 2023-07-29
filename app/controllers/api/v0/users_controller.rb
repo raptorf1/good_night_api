@@ -12,10 +12,6 @@ class Api::V0::UsersController < ApplicationController
   end
 
   def create
-    if params[:name].nil? || params[:name].strip.empty?
-      render json: { errors: ["You need to provide a name in order to create a user!"] }, status: 400 and return
-    end
-
     user_to_create = User.create(name: params[:name])
     render json: { errors: user_to_create.errors.full_messages }, status: 400 and return if !user_to_create.persisted?
 

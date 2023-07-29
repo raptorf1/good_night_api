@@ -64,7 +64,7 @@ RSpec.describe "POST /api/v0/sleep_wake_times", type: :request do
       end
 
       it "with correct error message" do
-        expect(json_response["errors"].first).to eq "You need to pass user ID!"
+        expect(json_response["errors"].first).to eq "User must exist"
       end
     end
   end
