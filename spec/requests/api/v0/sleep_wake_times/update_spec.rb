@@ -25,7 +25,7 @@ RSpec.describe "PUT /api/v0/sleep_wake_times/:id", type: :request do
     end
 
     it "with difference field of the updated record populated" do
-      expect(sleep_record.wake).to_not eq nil
+      expect(sleep_record.difference).to_not eq nil
     end
   end
 
