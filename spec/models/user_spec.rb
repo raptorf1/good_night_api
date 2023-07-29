@@ -15,4 +15,12 @@ RSpec.describe User, type: :model do
   describe "Relations" do
     it { is_expected.to have_many(:sleep_wake_time) }
   end
+
+  describe "Delete dependent settings" do
+    it "sleep record is deleted when associated user is deleted from the database" do
+      FactoryBot.create(:sleep_wake_time)
+      SleepWakeTime.last.user.destroy
+      expect(SleepWakeTime.all.length).to eq 0
+    end
+  end
 end
