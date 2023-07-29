@@ -10,4 +10,18 @@ class Api::V0::UsersController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     render json: { errors: ["User not found!"] }, status: 400
   end
+
+  def create
+    if params[:name].nil? || params[:name].strip.empty?
+      render json: { errors: ["You need to provide a name in order to create a user!"] }, status: 400 and return
+    end
+
+    user_to_create = User.create(name: params[:name])
+    render json: { errors: user_to_create.errors.full_messages }, status: 400 and return if !user_to_create.persisted?
+
+    render json: {
+             message: "User created successfully! Name: #{user_to_create.name}, ID: #{user_to_create.id}"
+           },
+           status: 200
+  end
 end
