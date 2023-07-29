@@ -24,4 +24,17 @@ class Api::V0::UsersController < ApplicationController
            },
            status: 200
   end
+
+  def destroy
+    retrieved_user = User.find(params[:id])
+    retrieved_user.destroy
+
+    render json: {
+             message:
+               "User with name: #{retrieved_user.name} and ID: #{retrieved_user.id} successfully deleted along with all their sleep records."
+           },
+           status: 200
+  rescue ActiveRecord::RecordNotFound
+    render json: { errors: ["User not found!"] }, status: 400
+  end
 end
