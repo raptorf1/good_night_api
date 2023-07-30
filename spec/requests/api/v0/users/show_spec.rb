@@ -10,15 +10,15 @@ RSpec.describe "GET /api/v0/users/:id", type: :request do
       end
 
       it "with correct result" do
-        expect(json_response["id"]).to eq user.id
+        expect(json_response["payload"]["id"]).to eq user.id
       end
 
       it "with correct fields returned" do
-        expect(json_response).to include("id", "name", "sleep_records")
+        expect(json_response["payload"]).to include("id", "name", "sleep_records")
       end
 
       it "with correct number of sleep records returned" do
-        expect(json_response["sleep_records"].empty?).to eq true
+        expect(json_response["payload"]["sleep_records"].empty?).to eq true
       end
     end
 
@@ -33,11 +33,11 @@ RSpec.describe "GET /api/v0/users/:id", type: :request do
       end
 
       it "with correct number of sleep records returned" do
-        expect(json_response["sleep_records"].count).to eq 5
+        expect(json_response["payload"]["sleep_records"].count).to eq 5
       end
 
       it "with correct sleep record fields returned" do
-        json_response["sleep_records"].each do |sleep_record|
+        json_response["payload"]["sleep_records"].each do |sleep_record|
           expect(sleep_record).to include("id", "sleep", "wake", "difference")
         end
       end

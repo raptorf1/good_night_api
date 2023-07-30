@@ -8,7 +8,7 @@ RSpec.describe "GET /api/v0/users", type: :request do
       end
 
       it "with correct number of results" do
-        expect(json_response.count).to eq 0
+        expect(json_response["payload"].count).to eq 0
       end
     end
 
@@ -23,11 +23,11 @@ RSpec.describe "GET /api/v0/users", type: :request do
       end
 
       it "with correct number of results" do
-        expect(json_response.count).to eq 5
+        expect(json_response["payload"].count).to eq 5
       end
 
       it "with correct fields returned" do
-        json_response.each { |user| expect(user).to include("id", "name") }
+        json_response["payload"].each { |user| expect(user).to include("id", "name") }
       end
     end
   end

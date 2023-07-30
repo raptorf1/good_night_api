@@ -17,6 +17,10 @@ RSpec.describe "POST /api/v0/users", type: :request do
     it "with correct message returned" do
       expect(json_response["message"]).to eq "User created successfully! Name: Tania, ID: #{User.all.first.id}"
     end
+
+    it "with correct payload returned" do
+      expect(json_response["payload"]["id"]).to eq User.all.first.id
+    end
   end
 
   describe "unsuccesfully" do

@@ -1,12 +1,19 @@
 class Api::V0::UsersController < ApplicationController
   def index
-    render json: User.all, each_serializer: Users::Serializer, status: 200
+    render json: {
+             payload: ActiveModelSerializers::SerializableResource.new(User.all, each_serializer: Users::Serializer)
+           },
+           status: 200
   end
 
   def show
     retrieved_user = User.find(params[:id])
 
-    render json: retrieved_user, serializer: Users::ShowSerializer, status: 200
+    render json: {
+             payload:
+               ActiveModelSerializers::SerializableResource.new(retrieved_user, serializer: Users::ShowSerializer)
+           },
+           status: 200
   rescue ActiveRecord::RecordNotFound
     render json: { errors: ["User not found!"] }, status: 400
   end
@@ -16,7 +23,8 @@ class Api::V0::UsersController < ApplicationController
     render json: { errors: user_to_create.errors.full_messages }, status: 400 and return if !user_to_create.persisted?
 
     render json: {
-             message: "User created successfully! Name: #{user_to_create.name}, ID: #{user_to_create.id}"
+             message: "User created successfully! Name: #{user_to_create.name}, ID: #{user_to_create.id}",
+             payload: ActiveModelSerializers::SerializableResource.new(user_to_create, serializer: Users::Serializer)
            },
            status: 200
   end
