@@ -8,7 +8,7 @@ RSpec.describe "GET /api/v0/sleep_wake_times", type: :request do
       end
 
       it "with correct number of results" do
-        expect(json_response.count).to eq 0
+        expect(json_response["payload"].count).to eq 0
       end
     end
 
@@ -23,21 +23,23 @@ RSpec.describe "GET /api/v0/sleep_wake_times", type: :request do
       end
 
       it "with correct number of results" do
-        expect(json_response.count).to eq 3
+        expect(json_response["payload"].count).to eq 3
       end
 
       it "with correct fields returned" do
-        json_response.each do |sleep_record|
-          expect(sleep_record).to include("sleep", "wake", "difference", "created_at", "user")
+        json_response["payload"].each do |sleep_record|
+          expect(sleep_record).to include("id", "sleep", "wake", "difference", "created_at", "user")
         end
       end
 
       it "with correct order returned (created_at DSC - newest record appears first)" do
         expect(
-          json_response.first["created_at"].to_datetime > json_response.second["created_at"].to_datetime
+          json_response["payload"].first["created_at"].to_datetime >
+            json_response["payload"].second["created_at"].to_datetime
         ).to eq true
         expect(
-          json_response.second["created_at"].to_datetime > json_response.third["created_at"].to_datetime
+          json_response["payload"].second["created_at"].to_datetime >
+            json_response["payload"].third["created_at"].to_datetime
         ).to eq true
       end
     end

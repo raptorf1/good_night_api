@@ -1,6 +1,13 @@
 class Api::V0::SleepWakeTimesController < ApplicationController
   def index
-    render json: SleepWakeTime.fetch_all_sorted_by_created_at, each_serializer: SleepWakeTimes::Serializer, status: 200
+    render json: {
+             payload:
+               ActiveModelSerializers::SerializableResource.new(
+                 SleepWakeTime.fetch_all_sorted_by_created_at,
+                 each_serializer: SleepWakeTimes::Serializer
+               )
+           },
+           status: 200
   end
 
   def create
@@ -11,7 +18,12 @@ class Api::V0::SleepWakeTimesController < ApplicationController
 
     render json: {
              message:
-               "Sleep record with ID: #{record_to_create.id} created successfully! Sleep time: #{record_to_create.sleep}."
+               "Sleep record with ID: #{record_to_create.id} created successfully! Sleep time: #{record_to_create.sleep}.",
+             payload:
+               ActiveModelSerializers::SerializableResource.new(
+                 record_to_create,
+                 serializer: SleepWakeTimes::Serializer
+               )
            },
            status: 200
   end
@@ -39,7 +51,12 @@ class Api::V0::SleepWakeTimesController < ApplicationController
 
     render json: {
              message:
-               "Sleep record with ID: #{params[:id]} updated successfully! Total sleep time: #{record_to_update.difference} seconds."
+               "Sleep record with ID: #{params[:id]} updated successfully! Total sleep time: #{record_to_update.difference} seconds.",
+             payload:
+               ActiveModelSerializers::SerializableResource.new(
+                 record_to_update,
+                 serializer: SleepWakeTimes::Serializer
+               )
            },
            status: 200
   rescue ActiveRecord::RecordNotFound

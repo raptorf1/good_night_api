@@ -14,6 +14,10 @@ RSpec.describe "POST /api/v0/sleep_wake_times", type: :request do
       ).to eq "Sleep record with ID: #{SleepWakeTime.all.first.id} created successfully! Sleep time: #{SleepWakeTime.all.first.sleep}."
     end
 
+    it "with correct payload returned" do
+      expect(json_response["payload"]["id"]).to eq SleepWakeTime.all.first.id
+    end
+
     it "with correct number of records saved in the DB" do
       expect(SleepWakeTime.all.count).to eq 1
     end

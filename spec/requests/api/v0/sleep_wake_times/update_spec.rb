@@ -18,7 +18,11 @@ RSpec.describe "PUT /api/v0/sleep_wake_times/:id", type: :request do
     it "with correct message" do
       expect(
         json_response["message"]
-      ).to eq "Sleep record with ID: #{SleepWakeTime.all.first.id} updated successfully! Total sleep time: #{SleepWakeTime.all.first.difference} seconds."
+      ).to eq "Sleep record with ID: #{sleep_record.id} updated successfully! Total sleep time: #{sleep_record.difference} seconds."
+    end
+
+    it "with correct payload returned" do
+      expect(json_response["payload"]["id"]).to eq sleep_record.id
     end
 
     it "with wake datetime of the updated record populated" do
