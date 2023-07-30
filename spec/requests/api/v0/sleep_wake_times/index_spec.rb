@@ -32,9 +32,13 @@ RSpec.describe "GET /api/v0/sleep_wake_times", type: :request do
         end
       end
 
-      it "with correct order returned (created_at ASC)" do
-        expect(json_response.first["created_at"].to_datetime < json_response.second["created_at"].to_datetime)
-        expect(json_response.second["created_at"].to_datetime < json_response.third["created_at"].to_datetime)
+      it "with correct order returned (created_at DSC - newest record appears first)" do
+        expect(
+          json_response.first["created_at"].to_datetime > json_response.second["created_at"].to_datetime
+        ).to eq true
+        expect(
+          json_response.second["created_at"].to_datetime > json_response.third["created_at"].to_datetime
+        ).to eq true
       end
     end
   end
