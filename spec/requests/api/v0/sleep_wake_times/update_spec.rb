@@ -3,6 +3,7 @@ RSpec.describe "PUT /api/v0/sleep_wake_times/:id", type: :request do
   let(:random_sleep_record) do
     FactoryBot.create(:sleep_wake_time, sleep: Time.now - 2.hours, wake: nil, difference: nil)
   end
+  let(:completed_sleep_record) { FactoryBot.create(:sleep_wake_time) }
 
   describe "succesfully" do
     before do
@@ -30,6 +31,22 @@ RSpec.describe "PUT /api/v0/sleep_wake_times/:id", type: :request do
   end
 
   describe "unsuccesfully" do
+    describe "when trying to update an already updated sleep record" do
+      before { put "/api/v0/sleep_wake_times/#{completed_sleep_record.id}" }
+
+      it "with 400 status" do
+        expect(response.status).to eq 400
+      end
+
+      it "with correct number of errors" do
+        expect(json_response["errors"].count).to eq 1
+      end
+
+      it "with correct error message" do
+        expect(json_response["errors"].first).to eq "Wake time is already recorded on this record. Cannot update!"
+      end
+    end
+
     describe "when sleep record ID does not exist in DB" do
       before { put "/api/v0/sleep_wake_times/15000", params: { user_id: sleep_record.user.id } }
 

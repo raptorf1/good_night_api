@@ -18,6 +18,9 @@ class Api::V0::SleepWakeTimesController < ApplicationController
 
   def update
     record_to_update = SleepWakeTime.find(params[:id])
+    if !record_to_update.wake.nil?
+      render json: { errors: ["Wake time is already recorded on this record. Cannot update!"] }, status: 400 and return
+    end
 
     render json: { errors: ["You need to pass user ID!"] }, status: 400 and return if params[:user_id].nil?
 
