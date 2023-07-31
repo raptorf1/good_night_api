@@ -18,6 +18,8 @@ RSpec.describe User, type: :model do
 
   describe "Relations" do
     it { is_expected.to have_many(:sleep_wake_time) }
+    it { is_expected.to have_many(:follow_association_1) }
+    it { is_expected.to have_many(:follow_association_2) }
   end
 
   describe "Delete dependent settings" do
@@ -25,6 +27,18 @@ RSpec.describe User, type: :model do
       FactoryBot.create(:sleep_wake_time)
       SleepWakeTime.last.user.destroy
       expect(SleepWakeTime.all.length).to eq 0
+    end
+
+    it "follow association is deleted when associated user requesting the follow is deleted from the database" do
+      FactoryBot.create(:follow_association)
+      FollowAssociation.last.requested_by_user.destroy
+      expect(FollowAssociation.all.length).to eq 0
+    end
+
+    it "follow association is deleted when associated user being followed is deleted from the database" do
+      FactoryBot.create(:follow_association)
+      FollowAssociation.last.user_to_follow.destroy
+      expect(FollowAssociation.all.length).to eq 0
     end
   end
 end
