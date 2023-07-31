@@ -19,13 +19,13 @@ class User < ApplicationRecord
       existing_associations.each { |association| friends_ids.push(association.user_to_follow_id) }
     end
 
-    friends_ids.each { |id| sleep_records.push(SleepWakeTime.where(user_id: id)) }
+    friends_ids.each { |id| sleep_records.push(SleepWakeTime.where(user_id: id)) } if !friends_ids.empty?
 
     if !sleep_records.empty?
       sleep_records
         .flatten
         .reject { |sleep_record| sleep_record.difference.nil? }
-        .reject { |sleep_record| sleep_record.wake < (DateTime.now.utc - 1.week) }
+        .select { |sleep_record| sleep_record.wake.between?(DateTime.now.utc - 2.weeks, DateTime.now.utc - 1.week) }
         .sort_by { |sleep_record| sleep_record.difference }
         .reverse
     end
