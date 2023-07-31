@@ -25,7 +25,8 @@ class Api::V0::FollowsController < ApplicationController
 
     render json: {
              message:
-               "You are now following user with name: #{follow_association_to_create.user_to_follow.name} and ID: #{follow_association_to_create.user_to_follow.id}"
+               "You are now following user with name: #{follow_association_to_create.user_to_follow.name} and ID: #{follow_association_to_create.user_to_follow.id}",
+             payload: "Association ID: #{follow_association_to_create.id}"
            },
            status: 200
   end

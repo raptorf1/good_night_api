@@ -29,6 +29,10 @@ RSpec.describe "POST /api/v0/follows", type: :request do
         json_response["message"]
       ).to eq "You are now following user with name: #{user_to_follow.name} and ID: #{user_to_follow.id}"
     end
+
+    it "with the created association's id as payload" do
+      expect(json_response["payload"]).to eq "Association ID: #{FollowAssociation.all.first.id}"
+    end
   end
 
   describe "unsuccesfully" do
