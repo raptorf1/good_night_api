@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_28_102937) do
+ActiveRecord::Schema.define(version: 2023_07_31_083524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "follow_associations", force: :cascade do |t|
+    t.bigint "requested_by_user_id"
+    t.bigint "user_to_follow_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["requested_by_user_id"], name: "index_follow_associations_on_requested_by_user_id"
+    t.index ["user_to_follow_id"], name: "index_follow_associations_on_user_to_follow_id"
+  end
 
   create_table "sleep_wake_times", force: :cascade do |t|
     t.datetime "sleep"
@@ -31,5 +40,7 @@ ActiveRecord::Schema.define(version: 2023_07_28_102937) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "follow_associations", "users", column: "requested_by_user_id"
+  add_foreign_key "follow_associations", "users", column: "user_to_follow_id"
   add_foreign_key "sleep_wake_times", "users"
 end
