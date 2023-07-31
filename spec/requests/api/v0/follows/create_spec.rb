@@ -27,7 +27,7 @@ RSpec.describe "POST /api/v0/follows", type: :request do
     it "with correct message returned" do
       expect(
         json_response["message"]
-      ).to eq "You are now following user with name: #{user_to_follow.name} and ID: #{user_to_follow.id}"
+      ).to eq "You are now following User with name: #{user_to_follow.name} and ID: #{user_to_follow.id}"
     end
 
     it "with the created association's id as payload" do
@@ -110,7 +110,7 @@ RSpec.describe "POST /api/v0/follows", type: :request do
       it "with correct error message" do
         expect(
           json_response["errors"].first
-        ).to eq "You already follow user with name: #{user_to_follow.name} and ID: #{user_to_follow.id}"
+        ).to eq "You already follow User with name: #{user_to_follow.name} and ID: #{user_to_follow.id}"
       end
 
       it "with no extra record created in the DB" do

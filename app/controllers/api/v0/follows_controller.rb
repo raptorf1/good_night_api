@@ -8,7 +8,7 @@ class Api::V0::FollowsController < ApplicationController
     if !existing_follow_association.nil?
       render json: {
                errors: [
-                 "You already follow user with name: #{existing_follow_association.user_to_follow.name} and ID: #{existing_follow_association.user_to_follow.id}"
+                 "You already follow User with name: #{existing_follow_association.user_to_follow.name} and ID: #{existing_follow_association.user_to_follow.id}"
                ]
              },
              status: 400 and return
@@ -25,9 +25,22 @@ class Api::V0::FollowsController < ApplicationController
 
     render json: {
              message:
-               "You are now following user with name: #{follow_association_to_create.user_to_follow.name} and ID: #{follow_association_to_create.user_to_follow.id}",
+               "You are now following User with name: #{follow_association_to_create.user_to_follow.name} and ID: #{follow_association_to_create.user_to_follow.id}",
              payload: "Association ID: #{follow_association_to_create.id}"
            },
            status: 200
+  end
+
+  def destroy
+    retrieved_association = FollowAssociation.find(params[:id])
+    retrieved_association.destroy
+
+    render json: {
+             message:
+               "You are no longer following User with name: #{retrieved_association.user_to_follow.name} and ID: #{retrieved_association.user_to_follow.id}."
+           },
+           status: 200
+  rescue ActiveRecord::RecordNotFound
+    render json: { errors: ["Follow association not found!"] }, status: 400
   end
 end
