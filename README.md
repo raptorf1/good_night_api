@@ -12,6 +12,8 @@
 
 -- Clone the repository on your local machine.
 
+-- Run `bundle` to install all project gems.
+
 -- Run `rails db:setup` to create the databases and apply the migrations.
 
 -- Fire up the server by running `rails s` on your local terminal.
@@ -51,3 +53,11 @@ follow another user
 DELETE    /api/v0/follows/:id
 unfollow a user
 ```
+
+- **Tests**
+
+-- The project is tested using `Rspec v.3.9.1`. To run all tests navigate from your terminal into the project folder and run `rspec`.
+
+- **Code Prettify**
+
+-- The code is prettified with the `Prettier` gem. You can try it by runing `bundle exec rbprettier --write '**/*'` in your terminal.
