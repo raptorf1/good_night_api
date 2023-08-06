@@ -21,6 +21,7 @@
 -- Using `curl` or any other similar tool (i.e. Postman), you can hit the created endpoints.
 
 - **Endpoints**
+
 ```
 GET       /api/v0/users
 get all users in the system
