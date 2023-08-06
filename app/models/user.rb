@@ -9,20 +9,22 @@ class User < ApplicationRecord
   validates :name, presence: true
 
   def self.one_week_sleep_records_of_user_and_following_sorted_by_difference(user_id)
-    sleep_records = []
-
-    sleep_records.push(SleepWakeTime.where(user_id: user_id))
+    users_ids_of_sleep_records_to_retrieve = [user_id]
 
     existing_associations = FollowAssociation.where(requested_by_user_id: user_id).select(:user_to_follow_id)
     if !existing_associations.empty?
-      existing_associations.each { |association| sleep_records.push(association.user_to_follow.sleep_wake_time) }
+      existing_associations.each do |association|
+        users_ids_of_sleep_records_to_retrieve.push(association.user_to_follow_id)
+      end
     end
 
-    sleep_records
-      .flatten
-      .reject { |sleep_record| sleep_record.difference.nil? }
-      .select { |sleep_record| sleep_record.wake.between?(DateTime.now.utc - 2.weeks, DateTime.now.utc - 1.week) }
-      .sort_by { |sleep_record| sleep_record.difference }
+    SleepWakeTime
+      .where(
+        user_id: users_ids_of_sleep_records_to_retrieve,
+        wake: DateTime.now.utc - 2.weeks..DateTime.now.utc - 1.week
+      )
+      .where.not(difference: nil)
+      .sort_by(&:difference)
       .reverse
   end
 end
