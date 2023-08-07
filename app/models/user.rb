@@ -13,14 +13,12 @@ class User < ApplicationRecord
 
     existing_associations = FollowAssociation.where(requested_by_user_id: user_id).select(:user_to_follow_id)
     if !existing_associations.empty?
-      existing_associations.each do |association|
-        users_ids_of_sleep_records_to_retrieve.push(association.user_to_follow_id)
-      end
+      users_ids_of_sleep_records_to_retrieve.push(existing_associations.map(&:user_to_follow_id))
     end
 
     SleepWakeTime
       .where(
-        user_id: users_ids_of_sleep_records_to_retrieve,
+        user_id: users_ids_of_sleep_records_to_retrieve.flatten,
         wake: DateTime.now.utc - 2.weeks..DateTime.now.utc - 1.week
       )
       .where.not(difference: nil)
